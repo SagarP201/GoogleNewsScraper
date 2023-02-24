@@ -121,7 +121,7 @@ class GoogleNews:
         d['entries'] = self.__add_sub_articles(d['entries'])
         return d
 
-    def search(self, query: str, helper = True, when = None, from_ = None, to_ = None, source = None, proxies=None, scraping_bee=None):
+    def search(self, query: str, helper = True, when = None, from_ = None, to_ = None, site = None, proxies=None, scraping_bee=None):
         """
         Return a list of all articles given a full-text search parameter,
         a country and a language
@@ -141,8 +141,8 @@ class GoogleNews:
             to_ = self.__from_to_helper(validate=to_)
             query += ' before:' + to_
 
-        if source:
-            query += ' source:' + source
+        if site:
+            query += ' site:' + site
 
         if helper == True:
             query = self.__search_helper(query)
