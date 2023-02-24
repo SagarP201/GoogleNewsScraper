@@ -1,10 +1,8 @@
-import feedparser
-from bs4 import BeautifulSoup
 import urllib
+from bs4 import BeautifulSoup
+import feedparser
 from dateutil.parser import parse as parse_date
 import requests
-
-
 
 class GoogleNews:
     def __init__(self, lang = 'en', country = 'US'):
@@ -92,8 +90,6 @@ class GoogleNews:
         except:
             raise Exception('Could not parse your date')
 
-
-
     def top_news(self, proxies=None, scraping_bee = None):
         """Return a list of all articles from the main page of Google News
         given a country and a language"""
@@ -125,7 +121,7 @@ class GoogleNews:
         d['entries'] = self.__add_sub_articles(d['entries'])
         return d
 
-    def search(self, query: str, helper = True, when = None, from_ = None, to_ = None, proxies=None, scraping_bee=None):
+    def search(self, query: str, helper = True, when = None, from_ = None, to_ = None, source = None, proxies=None, scraping_bee=None):
         """
         Return a list of all articles given a full-text search parameter,
         a country and a language
@@ -145,6 +141,9 @@ class GoogleNews:
             to_ = self.__from_to_helper(validate=to_)
             query += ' before:' + to_
 
+        if source:
+            query += ' source:' + source
+
         if helper == True:
             query = self.__search_helper(query)
 
@@ -154,4 +153,5 @@ class GoogleNews:
         d = self.__parse_feed(self.BASE_URL + '/search?q={}'.format(query) + search_ceid, proxies = proxies, scraping_bee=scraping_bee)
 
         d['entries'] = self.__add_sub_articles(d['entries'])
+
         return d
